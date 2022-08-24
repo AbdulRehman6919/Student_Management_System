@@ -1,0 +1,113 @@
+{% extends "students/base.html" %}
+
+{% block body%}
+
+        <h3 class="m-4"> All Earnings</h3>
+        <div class="row">
+            <div class="col-12">
+
+                {% if earnings %}
+                <div class="card bg-dark ms-4 me-4 mb-4" >
+                    <div class="card-header">  <i class="fa-solid fa-list fa-lg"></i> Earning Records</div>
+                    <div class="card-body">
+                    
+                      <p class="card-text">
+                        <div class="table-responsive">
+                            <table class="table table-dark" >
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Earning Id</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Actions</th>
+                                  </tr>
+                                </thead>
+                                <tbody >
+                                    {% for earning in earnings %}
+                                        <tr class="table-dark" >
+                                            <td class="align-middle">{{ earning.earning_id }}</td>
+                                            <td class="align-middle">{{ earning.description }}</td>
+                                            <td class="align-middle">{{ earning.type }}</td>
+                                            <td class="align-midlle">{{ earning.amount }}</td>
+                                            <td class="align-middle">
+                                                <button type="button" class="btn btn-outline-success me-1 " href="{% url 'view_earning' earning.id %}" data-bs-toggle="modal"
+                                                data-bs-target="#myModel{{earning.id}}"><i class="fa-solid fa-circle-info fa-lg" ></i></button>
+
+
+                                                <!-- Modal- View Earning -->
+                                                <div class="modal" id="myModel{{earning.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                      <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <h5 class="modal-title">Earning: {{earning.type}} </h5>
+                                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true"></span>
+                                                          </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                          
+                                                            <ul class="list-unstyled">
+                                                                <li>Earning Id: <strong>{{earning.earning_id}}</strong></li>
+                                                                <li>Earning  type: <strong>{{earning.type}}</strong></li>
+                                                                <li>Earning  amount: <strong>{{earning.amount}}</strong></li>
+                                                              
+        
+                                                            </ul>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                       
+                                                          <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+
+                                                  <a class ="btn btn-outline-secondary me-1" href="{% url 'edit_earning' earning.id %}"><i class="fa-solid fa-pen-to-square fa-lg"></i></a>
+                                                
+                                                
+                                                  <button type="button" class="btn btn-outline-danger me-1 " data-bs-toggle="modal"
+                                                  data-bs-target="#delete{{earning.id}}"><i class="fa-solid fa-trash fa-lg"></i></button>
+  
+                                                  
+                                                <!-- Modal- Delete Earning -->
+                                                <div class="modal" id="delete{{earning.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                      <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <h5 class="modal-title">Earning: {{earning.type}} </h5>
+                                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true"></span>
+                                                          </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                          
+                                                        <p>Are you sure you want to delete this Earning Type?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                       <form action="{% url 'delete_earning' earning.id %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <input type="submit" class="btn btn-outline-danger" value="Delete">
+                                                       </form>
+                                                          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                              </table>
+                        </div>
+                      </p>
+                    </div>
+                </div>
+                {% else %}
+                <h5 class="alert alert-light ms-4 me-4 ">No Earning Records</h5>
+                {% endif %}        
+            </div>
+        </div>
+      
+
+        {% endblock %}
