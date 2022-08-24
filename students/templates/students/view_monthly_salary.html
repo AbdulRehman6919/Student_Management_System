@@ -1,0 +1,117 @@
+{% extends "students/base.html" %}
+
+{% block body%}
+
+        <h3 class="m-4"> All Monthly Salary Records</h3>
+        <div class="row">
+            <div class="col-12">
+
+                {% if teachers%}
+                <div class="card bg-dark ms-4 me-4 mb-4" >
+                    <div class="card-header">  <i class="fa-solid fa-list fa-lg"></i> Salary Records</div>
+                    <div class="card-body">
+                    
+                      <p class="card-text">
+                        <div class="table-responsive">
+                            <table class="table table-dark">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Teacher Number</th>
+                                    <th scopr="col">Teacher Name</th>
+                                    <th scope="col">Current Month</th>
+                                    <th scope="col">Total Salary</th>
+                                    <th scope="col">Amount Paid</th>
+                                    <th scope="col">Actions</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    {% for teacher in teachers %}
+                                        <tr class="table-dark">
+                                            <td>{{ teacher.teacher_id.teacher_id }}</td>
+                                            <td>{{teacher.teacher_id.first_name}} {{teacher.teacher_id.last_name}}</td>
+                                            <td>{{ teacher.current_month }}</td>
+                                            <td>{{ teacher.total_salary }}</td>
+                                            <td>{{ teacher.paid_amount }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-outline-success me-1 " href="{% url 'view_teacher' teacher.id %}" data-bs-toggle="modal"
+                                                data-bs-target="#myModel{{teacher.id}}"><i class="fa-solid fa-circle-info fa-lg" ></i></button>
+
+
+                                                <!-- Modal- View Student -->
+                                                <div class="modal" id="myModel{{teacher.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                      <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <h5 class="modal-title">Teacher: {{teacher.teacher_id.first_name}} {{teacher.teacher_id.last_name}}</h5>
+                                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true"></span>
+                                                          </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                          
+                                                            <ul class="list-unstyled">
+                                                                <li>Teacher Id: <strong>{{teacher.teacher_id.teacher_id}}</strong></li>
+                                                                <li>Teacher First Name: <strong>{{teacher.teacher_id.first_name}}</strong></li>
+                                                                <li>Teacher Last Name: <strong>{{teacher.teacher_id.last_name}}</strong></li>
+                                                                <li>Current Month: <strong>{{teacher.current_month}}</strong></li>
+                                                                <li>Teacher Left Salary: <strong>{{teacher.left_amount}}</strong></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                       
+                                                          <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+
+                                                  <a class ="btn btn-outline-secondary me-1" href="{% url 'edit_teacher_salary' teacher.id %}"><i class="fa-solid fa-pen-to-square fa-lg"></i></a>
+                                                
+                                                
+                                                  <button type="button" class="btn btn-outline-danger me-1 " data-bs-toggle="modal"
+                                                  data-bs-target="#delete{{teacher.id}}"><i class="fa-solid fa-trash fa-lg"></i></button>
+  
+                                                  
+                                                <!-- Modal- Delete Student -->
+                                                <div class="modal" id="delete{{teacher.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                      <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <h5 class="modal-title">Teacher: {{teacher.teacher_id.first_name}} {{teacher.teacher_id.last_name}}</h5>
+                                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true"></span>
+                                                          </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                          
+                                                        <p>Are you sure you want to delete this Salary Record For Teacher?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                       <form action="{% url 'delete_teacher_salary' teacher.id %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <input type="submit" class="btn btn-outline-danger" value="Delete">
+                                                       </form>
+                                                          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
+                             
+                                </tbody>
+                              </table>
+                        </div>
+                      </p>
+                    </div>
+                </div>
+                {% else %}
+                <h5 class="alert alert-light ms-4 me-4 ">No Monthly Fees Record</h5>
+                {% endif %}        
+            </div>
+        </div>
+      
+
+        {% endblock %}
